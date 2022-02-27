@@ -1,18 +1,15 @@
-FROM python:3.9.7
-
-COPY requirements.txt .
-
-RUN pip -V
-
-RUN python -m pip install -r requirements.txt
-
-
-COPY . /app
+FROM python:3.9-slim-buster
 
 WORKDIR /app
 
+COPY requirements.txt .
+
+RUN python -m pip install -r requirements.txt
+
+COPY . /app
+
 RUN python db.py
 
-EXPOSE 80
+EXPOSE 5000
 
-CMD ["python", "runserver.py"]
+CMD [ "python", "-m", "flask", "run", "--host=0.0.0.0" ]
